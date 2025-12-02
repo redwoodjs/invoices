@@ -32,6 +32,7 @@ async function getInvoiceListSummary(userId: string) {
     .selectFrom("Invoice")
     .select(["id", "number", "date", "status", "customer"])
     .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
     .orderBy("date", "desc")
     .execute();
 }
@@ -42,7 +43,13 @@ export async function InvoiceListPage() {
 
   return (
     <Layout>
-      <div className="space-y-2 py-4 text-right">
+      <div className="space-y-2 py-4 flex justify-between items-center">
+        <a
+          href={link("/invoice/bin")}
+          className="text-sm text-muted-foreground hover:text-foreground"
+        >
+          View Deleted Invoices
+        </a>
         <NewInvoiceButton />
       </div>
 

@@ -95,4 +95,21 @@ export const migrations = {
       await db.schema.dropTable("Invoice").ifExists().execute();
     },
   },
+
+  "004_add_deleted_at_to_invoice": {
+    async up(db) {
+      return [
+        await db.schema
+          .alterTable("Invoice")
+          .addColumn("deletedAt", "text")
+          .execute(),
+      ];
+    },
+
+    async down(db) {
+      return [
+        await db.schema.alterTable("Invoice").dropColumn("deletedAt").execute(),
+      ];
+    },
+  },
 } satisfies Migrations;

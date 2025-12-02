@@ -11,6 +11,7 @@ export async function newInvoice() {
     .selectFrom("Invoice")
     .select(["number", "supplierName", "supplierLogo", "supplierContact", "notesA", "notesB", "taxes"])
     .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
     .orderBy("createdAt", "desc")
     .executeTakeFirst();
 
