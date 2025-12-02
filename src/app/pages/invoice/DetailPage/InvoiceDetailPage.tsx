@@ -68,6 +68,7 @@ async function getInvoice(id: string, userId: string) {
       notesB: "",
       createdAt: new Date(),
       updatedAt: null,
+      deletedAt: null,
     };
   }
 
@@ -88,9 +89,14 @@ async function getInvoice(id: string, userId: string) {
       typeof invoice.taxes === "string"
         ? JSON.parse(invoice.taxes)
         : invoice.taxes,
+    labels:
+      typeof invoice.labels === "string"
+        ? JSON.parse(invoice.labels)
+        : invoice.labels,
     date: invoice.date ? new Date(invoice.date) : new Date(),
     createdAt: invoice.createdAt ? new Date(invoice.createdAt) : new Date(),
     updatedAt: invoice.updatedAt ? new Date(invoice.updatedAt) : null,
+    deletedAt: invoice.deletedAt || null,
   };
 }
 
@@ -98,7 +104,7 @@ export async function InvoiceDetailPage({ params, ctx }: RequestInfo) {
   const invoice = await getInvoice(params.id, ctx.user!.id);
 
   return (
-    <Layout ctx={ctx}>
+    <Layout>
       <BreadcrumbList>
         <BreadcrumbLink href={link("/invoice/list")}>Invoices</BreadcrumbLink>
         <BreadcrumbSeparator />

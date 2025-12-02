@@ -6,6 +6,7 @@ import { db } from "@/db/db";
 
 import { InvoiceListPage } from "./ListPage/InvoiceListPage";
 import { InvoiceDetailPage } from "./DetailPage/InvoiceDetailPage";
+import { InvoiceBinPage } from "./BinPage/InvoiceBinPage";
 
 function isAuthenticated({ ctx }: RequestInfo) {
   if (!ctx.user) {
@@ -28,6 +29,7 @@ export const invoiceRoutes = [
     });
   }),
   route("/list", [isAuthenticated, InvoiceListPage]),
+  route("/bin", [isAuthenticated, InvoiceBinPage]),
   route("/:id", [isAuthenticated, InvoiceDetailPage]),
   route("/:id/upload", [
     isAuthenticated,

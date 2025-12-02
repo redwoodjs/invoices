@@ -9,8 +9,17 @@ export async function newInvoice() {
 
   const lastInvoice = await db
     .selectFrom("Invoice")
-    .select(["number", "supplierName", "supplierLogo", "supplierContact", "notesA", "notesB", "taxes"])
+    .select([
+      "number",
+      "supplierName",
+      "supplierLogo",
+      "supplierContact",
+      "notesA",
+      "notesB",
+      "taxes",
+    ])
     .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
     .orderBy("createdAt", "desc")
     .executeTakeFirst();
 
@@ -33,7 +42,8 @@ export async function newInvoice() {
       date: now,
       status: "draft",
       items: "[]",
-      labels: '{"invoiceNumber":"Invoice #","invoiceDate":"Date","itemDescription":"Description","itemQuantity":"Quantity","itemPrice":"Price","subtotal":"Subtotal","total":"Total"}',
+      labels:
+        '{"invoiceNumber":"Invoice #","invoiceDate":"Date","itemDescription":"Description","itemQuantity":"Quantity","itemPrice":"Price","subtotal":"Subtotal","total":"Total"}',
       currency: "$",
       createdAt: now,
     })

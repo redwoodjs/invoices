@@ -86,3 +86,25 @@ export async function deleteLogo(id: string) {
     .where("id", "=", id)
     .execute();
 }
+
+export async function deleteInvoice(id: string) {
+  const { ctx } = requestInfo;
+
+  const existingInvoice = await db
+    .selectFrom("Invoice")
+    .select(["id"])
+    .where("id", "=", id)
+    .where("userId", "=", ctx?.user?.id!)
+    .executeTakeFirst();
+
+  if (!existingInvoice) {
+    throw new Error("Invoice not found");
+  }
+
+  await db
+    .updateTable("Invoice")
+    .set({ deletedAt: new Date().toISOString() })
+    .where("id", "=", id)
+    .where("userId", "=", ctx?.user?.id!)
+    .execute();
+}
