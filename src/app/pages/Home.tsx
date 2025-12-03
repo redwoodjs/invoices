@@ -34,12 +34,14 @@ export function HomePage({ ctx }: RequestInfo) {
           supplierName: "",
           supplierContact: "",
           supplierLogo: null,
-          customer: "",
+          customerName: "",
+          customerDetails: null,
           currency: "$",
           notesA: "",
           notesB: "",
           createdAt: new Date(),
           updatedAt: null,
+          deletedAt: null,
         }}
         ctx={ctx}
       />

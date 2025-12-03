@@ -32,15 +32,29 @@ export type InvoiceTaxes = {
 async function getInvoiceListSummary(userId: string, customer?: string | null) {
   let query = db
     .selectFrom("Invoice")
-    .select(["id", "number", "date", "status", "customer"])
+    .select(["id", "number", "date", "status", "customerName"])
     .where("userId", "=", userId)
     .where("deletedAt", "is", null);
 
   if (customer) {
-    query = query.where("customer", "like", `%${customer}%`);
+    query = query.where("customerName", "like", `%${customer}%`);
   }
 
   return await query.orderBy("date", "desc").execute();
+}
+
+async function getUniqueCustomerNames(userId: string) {
+  const result = await db
+    .selectFrom("Invoice")
+    .select("customerName")
+    .distinct()
+    .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
+    .where("customerName", "is not", null)
+    .orderBy("customerName", "asc")
+    .execute();
+
+  return result.map((r) => r.customerName).filter(Boolean);
 }
 
 export async function InvoiceListPage({ request }: RequestInfo) {
@@ -48,6 +62,7 @@ export async function InvoiceListPage({ request }: RequestInfo) {
   const url = new URL(request.url);
   const customerFilter = url.searchParams.get("customer") ?? "";
   const invoices = await getInvoiceListSummary(user.id, customerFilter || null);
+  const customerNames = await getUniqueCustomerNames(user.id);
 
   return (
     <Layout>
@@ -70,7 +85,13 @@ export async function InvoiceListPage({ request }: RequestInfo) {
               placeholder="Filter by customer"
               defaultValue={customerFilter}
               className="w-48 sm:w-64"
+              list="customer-names"
             />
+            <datalist id="customer-names">
+              {customerNames.map((name) => (
+                <option key={name} value={name} />
+              ))}
+            </datalist>
             <Button type="submit" variant="outline" size="sm">
               Filter
             </Button>
@@ -125,7 +146,7 @@ function InvoiceListItem(
             })
           : ""}
       </TableCell>
-      <TableCell>{props.customer ?? ""}</TableCell>
+      <TableCell>{props.customerName ?? ""}</TableCell>
       <TableCell className="text-right">
         <a href={link("/invoice/:id", { id: props.id })}>Edit</a>
       </TableCell>

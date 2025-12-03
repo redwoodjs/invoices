@@ -15,11 +15,11 @@
     "moduleResolution": "bundler",
     /* Specify type package names to be included without being referenced in a source file. */
     "types": [
+      "@cloudflare/workers-types",
       "./worker-configuration.d.ts",
       "./types/rw.d.ts",
       "./types/vite.d.ts"
     ],
-    /* Specify type roots for custom type definitions */
     "paths": {
       "@/*": ["./src/*"]
     },
@@ -44,5 +44,6 @@
 
     /* Skip type checking all .d.ts files. */
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["node_modules", ".tmp"]
 }

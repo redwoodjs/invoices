@@ -16,6 +16,7 @@ import {
   finishPasskeyLogin,
   validateEmailAddress,
 } from "./functions";
+import { link } from "@/app/shared/links";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ export function LoginForm() {
           const success = await finishPasskeyRegistration(email, registration);
 
           if (success) {
-            window.location.href = "/invoice/list";
+            window.location.href = link("/invoice/list");
           } else {
             setResult("Failed to register");
           }
@@ -63,7 +64,7 @@ export function LoginForm() {
           const success = await finishPasskeyLogin(authentication);
 
           if (success) {
-            window.location.href = "/invoice/list";
+            window.location.href = link("/invoice/list");
           } else {
             setResult("Failed to login");
           }

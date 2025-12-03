@@ -9,7 +9,6 @@ import { Session } from "./session/durableObject";
 export { SessionDurableObject } from "./session/durableObject";
 export { AppDurableObject } from "./db/durableObject";
 
-import { link } from "@/app/shared/links";
 import { Document } from "@/app/Document";
 import { HomePage } from "@/app/pages/Home";
 
@@ -42,7 +41,7 @@ export const getUser = async (session: Session | null) => {
   return user || null;
 };
 
-const app = defineApp([
+export const app = defineApp([
   async ({ request, ctx, response }) => {
     try {
       ctx.session = await sessionStore.load(request);
@@ -65,7 +64,7 @@ const app = defineApp([
           console.log("redirecting to invoice list");
           return new Response(null, {
             status: 302,
-            headers: { Location: link("/invoice/list") },
+            headers: { Location: "/invoice/list" },
           });
         }
       },

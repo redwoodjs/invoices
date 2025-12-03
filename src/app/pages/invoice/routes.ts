@@ -3,6 +3,7 @@ import type { RequestInfo } from "rwsdk/worker";
 import { env } from "cloudflare:workers";
 
 import { db } from "@/db/db";
+import { link } from "@/app/shared/links";
 
 import { InvoiceListPage } from "./ListPage/InvoiceListPage";
 import { InvoiceDetailPage } from "./DetailPage/InvoiceDetailPage";
@@ -24,7 +25,7 @@ export const invoiceRoutes = [
     return new Response(null, {
       status: 301,
       headers: {
-        Location: "/invoice/list",
+        Location: link("/invoice/list"),
       },
     });
   }),

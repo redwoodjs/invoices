@@ -1,15 +1,4 @@
-import { defineLinks } from "rwsdk/router";
+import { linkFor } from "rwsdk/router";
+import type { App } from "rwsdk/worker";
 
-export const link = defineLinks([
-  "/",
-
-  "/user/login",
-  "/user/logout",
-  "/user/auth",
-
-  "/invoice/list",
-  "/invoice/bin",
-  "/invoice/:id",
-  "/invoice/:id/upload",
-  "/invoice/logos",
-]);
+export const link: ReturnType<typeof linkFor> = linkFor<App>();
