@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { Button } from "@/app/components/ui/button";
 
 import { newInvoice } from "./functions";
+import { link } from "@/app/shared/links";
 
 export function NewInvoiceButton() {
   const [isPending, startTransition] = useTransition();
@@ -13,7 +14,7 @@ export function NewInvoiceButton() {
     startTransition(async () => {
       const invoice = await newInvoice();
       startTransition(() => {
-        window.location.href = `/invoice/${invoice.id}`;
+        window.location.href = link("/invoice/:id", { id: invoice.id });
       });
     });
   };
