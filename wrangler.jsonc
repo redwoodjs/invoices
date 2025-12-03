@@ -39,8 +39,7 @@
   },
   "migrations": [
     {
-      "tag": "v3",
-      "new_sqlite_classes": ["SessionDurableObject", "AppDurableObject"]
+      "tag": "alchemy:v4"
     }
   ],
   "r2_buckets": [
