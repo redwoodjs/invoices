@@ -18,7 +18,7 @@ import {
 async function getDeletedInvoices(userId: string) {
   return await db
     .selectFrom("Invoice")
-    .select(["id", "number", "date", "status", "customerName", "deletedAt"])
+    .select(["id", "number", "date", "status", "customer", "deletedAt"])
     .where("userId", "=", userId)
     .where("deletedAt", "is not", null)
     .orderBy("deletedAt", "desc")
@@ -84,7 +84,7 @@ function InvoiceBinItem(
             })
           : ""}
       </TableCell>
-      <TableCell>{props.customerName ?? ""}</TableCell>
+      <TableCell>{props.customer ?? ""}</TableCell>
       <TableCell>
         {props.deletedAt
           ? new Date(props.deletedAt).toLocaleDateString(undefined, {
@@ -102,7 +102,3 @@ function InvoiceBinItem(
     </TableRow>
   );
 }
-
-
-
-

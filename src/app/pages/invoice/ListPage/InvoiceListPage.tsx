@@ -32,12 +32,12 @@ export type InvoiceTaxes = {
 async function getInvoiceListSummary(userId: string, customer?: string | null) {
   let query = db
     .selectFrom("Invoice")
-    .select(["id", "number", "date", "status", "customerName"])
+    .select(["id", "number", "date", "status", "customer"])
     .where("userId", "=", userId)
     .where("deletedAt", "is", null);
 
   if (customer) {
-    query = query.where("customerName", "like", `%${customer}%`);
+    query = query.where("customer", "like", `%${customer}%`);
   }
 
   return await query.orderBy("date", "desc").execute();
@@ -46,15 +46,15 @@ async function getInvoiceListSummary(userId: string, customer?: string | null) {
 async function getUniqueCustomerNames(userId: string) {
   const result = await db
     .selectFrom("Invoice")
-    .select("customerName")
+    .select("customer")
     .distinct()
     .where("userId", "=", userId)
     .where("deletedAt", "is", null)
-    .where("customerName", "is not", null)
-    .orderBy("customerName", "asc")
+    .where("customer", "is not", null)
+    .orderBy("customer", "asc")
     .execute();
 
-  return result.map((r) => r.customerName).filter(Boolean);
+  return result.map((r) => r.customer).filter((c): c is string => Boolean(c));
 }
 
 export async function InvoiceListPage({ request }: RequestInfo) {
@@ -146,7 +146,7 @@ function InvoiceListItem(
             })
           : ""}
       </TableCell>
-      <TableCell>{props.customerName ?? ""}</TableCell>
+      <TableCell>{props.customer ?? ""}</TableCell>
       <TableCell className="text-right">
         <a href={link("/invoice/:id", { id: props.id })}>Edit</a>
       </TableCell>

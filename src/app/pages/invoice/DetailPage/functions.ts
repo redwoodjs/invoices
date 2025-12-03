@@ -32,9 +32,20 @@ export async function saveInvoice(
 
   const data: DbInvoice = {
     ...invoice,
-    date: typeof invoice.date === "string" ? invoice.date : invoice.date.toISOString(),
-    createdAt: typeof invoice.createdAt === "string" ? invoice.createdAt : invoice.createdAt.toISOString(),
-    updatedAt: invoice.updatedAt ? (typeof invoice.updatedAt === "string" ? invoice.updatedAt : invoice.updatedAt.toISOString()) : null,
+    customer: invoice.customer,
+    date:
+      typeof invoice.date === "string"
+        ? invoice.date
+        : invoice.date.toISOString(),
+    createdAt:
+      typeof invoice.createdAt === "string"
+        ? invoice.createdAt
+        : invoice.createdAt.toISOString(),
+    updatedAt: invoice.updatedAt
+      ? typeof invoice.updatedAt === "string"
+        ? invoice.updatedAt
+        : invoice.updatedAt.toISOString()
+      : null,
     items: JSON.stringify(items),
     taxes: JSON.stringify(taxes),
     labels: JSON.stringify(labels),
@@ -53,8 +64,7 @@ export async function saveInvoice(
         supplierLogo: data.supplierLogo,
         supplierName: data.supplierName,
         supplierContact: data.supplierContact,
-        customerName: data.customerName,
-        customerDetails: data.customerDetails,
+        customer: data.customer,
         notesA: data.notesA,
         notesB: data.notesB,
         items: data.items,

@@ -10,7 +10,6 @@ export function NewInvoiceButton() {
   const [isPending, startTransition] = useTransition();
 
   const onClick = () => {
-    // @ts-expect-error https://react.dev/reference/react/useTransition#react-doesnt-treat-my-state-update-after-await-as-a-transition
     startTransition(async () => {
       const invoice = await newInvoice();
       startTransition(() => {

@@ -61,8 +61,7 @@ export type Invoice = {
   supplierName: string;
   supplierContact: string | null;
   supplierLogo: string | null;
-  customerName: string;
-  customerDetails: string | null;
+  customer: string | null;
   currency: string;
   notesA: string;
   notesB: string;
@@ -200,18 +199,11 @@ export function InvoiceForm(props: {
 
           {/* Customer */}
           <div className="col-span-6">
-            <Input
-              placeholder="Customer Name"
-              defaultValue={invoice.customerName ?? ""}
-              onChange={(e) =>
-                setInvoice({ ...invoice, customerName: e.target.value })
-              }
-            />
             <Textarea
-              placeholder="1234 Main St&#10;Scranton, PA"
-              defaultValue={invoice.customerDetails ?? ""}
+              placeholder="Customer Name&#10;1234 Main St&#10;Scranton, PA"
+              defaultValue={invoice.customer ?? ""}
               onChange={(e) =>
-                setInvoice({ ...invoice, customerDetails: e.target.value })
+                setInvoice({ ...invoice, customer: e.target.value })
               }
             />
           </div>
