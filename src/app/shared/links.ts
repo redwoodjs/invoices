@@ -8,6 +8,7 @@ export const link = defineLinks([
   "/user/auth",
 
   "/invoice/list",
+  "/invoice/bin",
   "/invoice/:id",
   "/invoice/:id/upload",
   "/invoice/logos",
