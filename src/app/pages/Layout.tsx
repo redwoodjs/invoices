@@ -67,7 +67,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         >
           Host your own.
         </a>
-        <a href="https://rwsdk.com" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://rwsdk.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
           {" "}
           Crafted with{" "}
           <img
