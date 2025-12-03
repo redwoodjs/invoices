@@ -112,4 +112,74 @@ export const migrations = {
       ];
     },
   },
+
+  "005_split_customer_field": {
+    async up(db) {
+      // Add new columns
+      await db.schema
+        .alterTable("Invoice")
+        .addColumn("customerName", "text")
+        .addColumn("customerDetails", "text")
+        .execute();
+
+      // Migrate existing data: split by first newline
+      const invoices = await db
+        .selectFrom("Invoice")
+        .select(["id", "customer"])
+        .execute();
+
+      for (const invoice of invoices) {
+        if (invoice.customer) {
+          const lines = invoice.customer.split("\n");
+          const customerName = lines[0] || "";
+          const customerDetails = lines.slice(1).join("\n") || null;
+
+          await db
+            .updateTable("Invoice")
+            .set({ customerName, customerDetails })
+            .where("id", "=", invoice.id)
+            .execute();
+        }
+      }
+
+      // Drop old customer column
+      await db.schema
+        .alterTable("Invoice")
+        .dropColumn("customer")
+        .execute();
+    },
+
+    async down(db) {
+      // Re-add customer column
+      await db.schema
+        .alterTable("Invoice")
+        .addColumn("customer", "text")
+        .execute();
+
+      // Migrate data back
+      const invoices = await db
+        .selectFrom("Invoice")
+        .select(["id", "customerName", "customerDetails"])
+        .execute();
+
+      for (const invoice of invoices) {
+        const customer = [invoice.customerName, invoice.customerDetails]
+          .filter(Boolean)
+          .join("\n");
+
+        await db
+          .updateTable("Invoice")
+          .set({ customer })
+          .where("id", "=", invoice.id)
+          .execute();
+      }
+
+      // Drop new columns
+      await db.schema
+        .alterTable("Invoice")
+        .dropColumn("customerName")
+        .dropColumn("customerDetails")
+        .execute();
+    },
+  },
 } satisfies Migrations;

@@ -5,7 +5,7 @@ import { InvoiceForm } from "./invoice/DetailPage/InvoiceForm";
 
 export function HomePage({ ctx }: RequestInfo) {
   return (
-    <Layout ctx={ctx}>
+    <Layout>
       <InvoiceForm
         invoice={{
           id: "new",
@@ -34,12 +34,13 @@ export function HomePage({ ctx }: RequestInfo) {
           supplierName: "",
           supplierContact: "",
           supplierLogo: null,
-          customer: "",
+          customer: null,
           currency: "$",
           notesA: "",
           notesB: "",
           createdAt: new Date(),
           updatedAt: null,
+          deletedAt: null,
         }}
         ctx={ctx}
       />

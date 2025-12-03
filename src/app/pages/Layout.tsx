@@ -30,7 +30,7 @@ function Logo() {
 function Header({ user }: { user?: RequestInfo["ctx"]["user"] }) {
   return (
     <div className="px-8 py-4 flex justify-between items-center border-b">
-      <a href="/">
+      <a href={link("/")}>
         <Logo />
       </a>
       <div className="flex gap-2 items-center">

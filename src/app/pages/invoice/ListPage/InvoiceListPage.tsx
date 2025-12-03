@@ -43,11 +43,26 @@ async function getInvoiceListSummary(userId: string, customer?: string | null) {
   return await query.orderBy("date", "desc").execute();
 }
 
+async function getUniqueCustomerNames(userId: string) {
+  const result = await db
+    .selectFrom("Invoice")
+    .select("customer")
+    .distinct()
+    .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
+    .where("customer", "is not", null)
+    .orderBy("customer", "asc")
+    .execute();
+
+  return result.map((r) => r.customer).filter((c): c is string => Boolean(c));
+}
+
 export async function InvoiceListPage({ request }: RequestInfo) {
   const user = requestInfo.ctx.user!;
   const url = new URL(request.url);
   const customerFilter = url.searchParams.get("customer") ?? "";
   const invoices = await getInvoiceListSummary(user.id, customerFilter || null);
+  const customerNames = await getUniqueCustomerNames(user.id);
 
   return (
     <Layout>
@@ -70,7 +85,13 @@ export async function InvoiceListPage({ request }: RequestInfo) {
               placeholder="Filter by customer"
               defaultValue={customerFilter}
               className="w-48 sm:w-64"
+              list="customer-names"
             />
+            <datalist id="customer-names">
+              {customerNames.map((name) => (
+                <option key={name} value={name} />
+              ))}
+            </datalist>
             <Button type="submit" variant="outline" size="sm">
               Filter
             </Button>

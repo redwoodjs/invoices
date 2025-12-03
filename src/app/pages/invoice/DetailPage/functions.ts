@@ -32,9 +32,20 @@ export async function saveInvoice(
 
   const data: DbInvoice = {
     ...invoice,
-    date: typeof invoice.date === "string" ? invoice.date : invoice.date.toISOString(),
-    createdAt: typeof invoice.createdAt === "string" ? invoice.createdAt : invoice.createdAt.toISOString(),
-    updatedAt: invoice.updatedAt ? (typeof invoice.updatedAt === "string" ? invoice.updatedAt : invoice.updatedAt.toISOString()) : null,
+    customer: invoice.customer,
+    date:
+      typeof invoice.date === "string"
+        ? invoice.date
+        : invoice.date.toISOString(),
+    createdAt:
+      typeof invoice.createdAt === "string"
+        ? invoice.createdAt
+        : invoice.createdAt.toISOString(),
+    updatedAt: invoice.updatedAt
+      ? typeof invoice.updatedAt === "string"
+        ? invoice.updatedAt
+        : invoice.updatedAt.toISOString()
+      : null,
     items: JSON.stringify(items),
     taxes: JSON.stringify(taxes),
     labels: JSON.stringify(labels),
