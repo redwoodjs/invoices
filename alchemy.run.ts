@@ -69,7 +69,10 @@ await WranglerJson({
         ],
       };
 
-      // Fix DO bindings to remove script_name if present
+      // Fix DO bindings: Alchemy may add a `script_name` field to Durable Object bindings
+      // that references the temporary worker name (e.g., "billable-alchemy"). In production,
+      // Durable Objects are in the same script as the worker, so `script_name` is unnecessary
+      // and should be removed. This ensures the final config only contains `name` and `class_name`.
       if (fixedConfig.durable_objects?.bindings) {
         fixedConfig.durable_objects.bindings =
           fixedConfig.durable_objects.bindings.map((b: any) => {
