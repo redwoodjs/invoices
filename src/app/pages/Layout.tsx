@@ -65,19 +65,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
           rel="noopener noreferrer"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          Host your own
+          Host your own.
         </a>
         <a
           href="https://rwsdk.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-end justify-end"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
         >
-          Built with RedwoodSDK{" "}
+          Built with{" "}
           <img
             src="https://imagedelivery.net/EBSSfnGYYD9-tGTmYMjDgg/37162c6c-890c-48e3-790a-48b2b87fcd00/public"
             alt="RedwoodSDK"
-            className="h-3.5 w-auto inline-block align-middle"
+            className="h-3.5 w-auto"
           />
         </a>
       </div>
