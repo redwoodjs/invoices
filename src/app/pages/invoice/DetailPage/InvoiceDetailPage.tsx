@@ -80,20 +80,34 @@ async function getInvoice(id: string, userId: string) {
     .where("userId", "=", userId)
     .executeTakeFirstOrThrow();
 
+  // Helper function to safely parse JSON strings
+  const safeParseJson = (value: unknown, defaultValue: any) => {
+    if (typeof value === "string") {
+      if (!value || value.trim() === "") {
+        return defaultValue;
+      }
+      try {
+        return JSON.parse(value);
+      } catch {
+        return defaultValue;
+      }
+    }
+    return value ?? defaultValue;
+  };
+
   return {
     ...invoice,
-    items:
-      typeof invoice.items === "string"
-        ? JSON.parse(invoice.items)
-        : invoice.items,
-    taxes:
-      typeof invoice.taxes === "string"
-        ? JSON.parse(invoice.taxes)
-        : invoice.taxes,
-    labels:
-      typeof invoice.labels === "string"
-        ? JSON.parse(invoice.labels)
-        : invoice.labels,
+    items: safeParseJson(invoice.items, []),
+    taxes: safeParseJson(invoice.taxes, []),
+    labels: safeParseJson(invoice.labels, {
+      invoiceNumber: "",
+      invoiceDate: "",
+      itemDescription: "",
+      itemQuantity: "",
+      itemPrice: "",
+      total: "",
+      subtotal: "",
+    }),
     date: invoice.date ? new Date(invoice.date) : new Date(),
     createdAt: invoice.createdAt ? new Date(invoice.createdAt) : new Date(),
     updatedAt: invoice.updatedAt ? new Date(invoice.updatedAt) : null,
