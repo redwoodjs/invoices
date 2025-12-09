@@ -1,24 +1,20 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "billable",
-  "account_id": "1634a8e653b2ce7e0f7a23cca8cbd86a",
   "main": "src/worker.tsx",
-  "placement": {
-    "mode": "smart"
-  },
-  "routes": [
-    {
-      "pattern": "billable.me",
-      "custom_domain": true
-    }
-  ],
   "compatibility_date": "2025-10-11",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "assets": {
     "binding": "ASSETS"
   },
-  "observability": {
-    "enabled": true
+  "placement": {
+    "mode": "smart"
+  },
+  "vars": {
+    "APP_URL": "https://billable.me",
+    "APP_NAME": "billable",
+    "WEBAUTHN_APP_NAME": "billable"
   },
   "durable_objects": {
     "bindings": [
@@ -32,20 +28,26 @@
       }
     ]
   },
-  "vars": {
-    "APP_URL": "https://billable.me",
-    "APP_NAME": "billable",
-    "WEBAUTHN_APP_NAME": "billable"
-  },
+  "r2_buckets": [
+    {
+      "binding": "R2",
+      "bucket_name": "billable",
+      "preview_bucket_name": "billable"
+    }
+  ],
   "migrations": [
     {
       "tag": "alchemy:v4"
     }
   ],
-  "r2_buckets": [
+  "account_id": "1634a8e653b2ce7e0f7a23cca8cbd86a",
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
     {
-      "binding": "R2",
-      "bucket_name": "billable"
+      "pattern": "billable.me",
+      "custom_domain": true
     }
   ]
 }
