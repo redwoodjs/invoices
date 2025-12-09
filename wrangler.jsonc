@@ -2,9 +2,7 @@
   "name": "billable",
   "main": "src/worker.tsx",
   "compatibility_date": "2025-10-11",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "binding": "ASSETS"
   },
@@ -37,7 +35,8 @@
   ],
   "migrations": [
     {
-      "tag": "alchemy:v4"
+      "tag": "alchemy:v4",
+      "new_sqlite_classes": ["AppDurableObject"]
     }
   ],
   "account_id": "1634a8e653b2ce7e0f7a23cca8cbd86a",

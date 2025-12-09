@@ -19,6 +19,7 @@ const sessionDO = await DurableObjectNamespace("session-do", {
 
 const appDO = await DurableObjectNamespace("app-do", {
   className: "AppDurableObject",
+  sqlite: true,
 });
 
 const worker = await Worker("billable-worker", {
@@ -65,6 +66,7 @@ await WranglerJson({
         migrations: [
           {
             tag: "alchemy:v4",
+            new_sqlite_classes: ["AppDurableObject"],
           },
         ],
       };
