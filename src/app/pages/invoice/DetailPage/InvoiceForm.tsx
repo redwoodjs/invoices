@@ -6,21 +6,12 @@ import { toast, Toaster } from "sonner";
 import type { RequestInfo } from "rwsdk/worker";
 
 import { type InvoiceTaxes, type InvoiceItem } from "./InvoiceDetailPage";
-import { deleteLogo, saveInvoice, deleteInvoice } from "./functions";
+import { deleteLogo, saveInvoice } from "./functions";
 import { PrintPdf } from "./PrintToPdf";
 import { link } from "@/app/shared/links";
 import { Button } from "@/app/components/ui/button";
 import { Input as OGInput } from "@/app/components/ui/input";
 import { Textarea as OGTextarea } from "@/app/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/app/components/ui/dialog";
 
 import { cn } from "@/app/components/cn";
 
@@ -62,12 +53,12 @@ export type Invoice = {
   supplierContact: string | null;
   supplierLogo: string | null;
   customer: string;
+  customerName: string | null;
   currency: string;
   notesA: string;
   notesB: string;
   createdAt: Date;
   updatedAt: Date | null;
-  deletedAt: string | null;
 };
 
 export function InvoiceForm(props: {
@@ -86,60 +77,11 @@ export function InvoiceForm(props: {
 
   const isLoggedIn = props.ctx?.user !== null;
 
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
   return (
     <div>
       <Toaster />
       <div className="flex gap-2 py-4 justify-end">
         <PrintPdf contentRef={pdfContentRef} />
-        {invoice.id !== "new" && !invoice.deletedAt && (
-          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="destructive">
-                <Trash2Icon className="h-4 w-4" />
-                Delete
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Delete Invoice</DialogTitle>
-                <DialogDescription>
-                  Are you sure you want to delete invoice #{invoice.number}?
-                  This action will move the invoice to the bin. You can restore
-                  it later if needed.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setDeleteDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="destructive"
-                  onClick={async () => {
-                    if (isLoggedIn) {
-                      try {
-                        await deleteInvoice(invoice.id);
-                        toast.success("Invoice deleted");
-                        window.location.href = link("/invoice/list");
-                      } catch (error) {
-                        toast.error("Failed to delete invoice");
-                        console.error(error);
-                      }
-                    } else {
-                      toast.error("You must be logged in to delete an invoice");
-                    }
-                  }}
-                >
-                  Delete
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        )}
         <Button
           onClick={async () => {
             if (isLoggedIn) {
@@ -197,10 +139,19 @@ export function InvoiceForm(props: {
 
           <Spacer />
 
-          {/* Customer */}
+          {/* Customer Name */}
           <div className="col-span-6">
+            <Input
+              type="text"
+              placeholder="Flexopolis Gym"
+              value={invoice.customerName ?? ""}
+              className="font-semibold"
+              onChange={(e) =>
+                setInvoice({ ...invoice, customerName: e.target.value })
+              }
+            />
             <Textarea
-              placeholder="Flexopolis Gym&#10;1234 Main St&#10;Scranton, PA"
+              placeholder="1234 Main St&#10;Scranton, PA"
               defaultValue={invoice.customer ?? ""}
               onChange={(e) =>
                 setInvoice({ ...invoice, customer: e.target.value })

@@ -63,6 +63,7 @@ async function getInvoice(id: string, userId: string) {
       supplierContact: "",
       supplierLogo: null,
       customer: "",
+      customerName: "",
       currency: "$",
       notesA: "",
       notesB: "",

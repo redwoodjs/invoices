@@ -3,7 +3,36 @@
 import { db } from "@/db/db";
 import { requestInfo } from "rwsdk/worker";
 
-export async function newInvoice() {
+export async function getCustomerNames() {
+  const { ctx } = requestInfo;
+  const userId = ctx.user?.id!;
+
+  const customers = await db
+    .selectFrom("Invoice")
+    .select(["customerName", "customer"])
+    .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
+    .where("customerName", "is not", null)
+    .where("customerName", "!=", "")
+    .distinct()
+    .orderBy("customerName", "asc")
+    .execute();
+
+  // Group by customerName and get the most recent customer address for each
+  const customerMap = new Map<string, string>();
+  for (const customer of customers) {
+    if (customer.customerName && !customerMap.has(customer.customerName)) {
+      customerMap.set(customer.customerName, customer.customer || "");
+    }
+  }
+
+  return Array.from(customerMap.entries()).map(([name, address]) => ({
+    name,
+    address,
+  }));
+}
+
+export async function newInvoice(customerName?: string, customer?: string) {
   const { ctx } = requestInfo;
   const userId = ctx.user?.id!;
 
@@ -37,6 +66,8 @@ export async function newInvoice() {
       notesA: lastInvoice?.notesA || null,
       notesB: lastInvoice?.notesB || null,
       taxes: lastInvoice?.taxes || "[]",
+      customerName: customerName || null,
+      customer: customer || null,
       userId,
       title: "invoice",
       date: now,

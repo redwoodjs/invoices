@@ -32,12 +32,12 @@ export type InvoiceTaxes = {
 async function getInvoiceListSummary(userId: string, customer?: string | null) {
   let query = db
     .selectFrom("Invoice")
-    .select(["id", "number", "date", "status", "customer"])
+    .select(["id", "number", "date", "status", "customerName"])
     .where("userId", "=", userId)
     .where("deletedAt", "is", null);
 
   if (customer) {
-    query = query.where("customer", "like", `%${customer}%`);
+    query = query.where("customerName", "like", `%${customer}%`);
   }
 
   return await query.orderBy("date", "desc").execute();
@@ -125,7 +125,7 @@ function InvoiceListItem(
             })
           : ""}
       </TableCell>
-      <TableCell>{props.customer ?? ""}</TableCell>
+      <TableCell>{props.customerName ?? ""}</TableCell>
       <TableCell className="text-right">
         <a href={link("/invoice/:id", { id: props.id })}>Edit</a>
       </TableCell>

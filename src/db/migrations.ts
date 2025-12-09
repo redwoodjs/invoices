@@ -112,4 +112,45 @@ export const migrations = {
       ];
     },
   },
+
+  "005_add_customer_name_column": {
+    async up(db) {
+      const results = [
+        await db.schema
+          .alterTable("Invoice")
+          .addColumn("customerName", "text")
+          .execute(),
+      ];
+
+      // Populate existing records by extracting first line from customer field
+      const invoices = await db
+        .selectFrom("Invoice")
+        .select(["id", "customer"])
+        .where("customer", "is not", null)
+        .where("customer", "!=", "")
+        .execute();
+
+      for (const invoice of invoices) {
+        if (invoice.customer) {
+          const firstLine = invoice.customer.split("\n")[0] || invoice.customer;
+          await db
+            .updateTable("Invoice")
+            .set({ customerName: firstLine })
+            .where("id", "=", invoice.id)
+            .execute();
+        }
+      }
+
+      return results;
+    },
+
+    async down(db) {
+      return [
+        await db.schema
+          .alterTable("Invoice")
+          .dropColumn("customerName")
+          .execute(),
+      ];
+    },
+  },
 } satisfies Migrations;
