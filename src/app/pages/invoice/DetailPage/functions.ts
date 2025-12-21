@@ -9,6 +9,7 @@ import type {
 } from "./InvoiceDetailPage";
 import type { Invoice as FormInvoice } from "./InvoiceForm";
 import { requestInfo } from "rwsdk/worker";
+import { link } from "@/app/shared/links";
 
 export async function saveInvoice(
   id: string,
@@ -75,6 +76,13 @@ export async function saveInvoice(
       })
     )
     .execute();
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: link("/invoice/list"),
+    },
+  });
 }
 
 export async function deleteLogo(id: string) {

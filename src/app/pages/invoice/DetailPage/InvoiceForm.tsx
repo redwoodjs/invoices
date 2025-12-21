@@ -92,7 +92,6 @@ export function InvoiceForm(props: {
                 items,
                 taxes
               );
-              window.location.href = link("/invoice/list");
             } else {
               toast.error("You must be logged in to save an invoice");
             }
