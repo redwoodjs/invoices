@@ -89,7 +89,7 @@ export async function InvoiceListPage({ request }: RequestInfo) {
 
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-transparent">
             <TableHead>Invoice #</TableHead>
             <TableHead>Date</TableHead>
             <TableHead>Customer</TableHead>
@@ -111,23 +111,39 @@ export async function InvoiceListPage({ request }: RequestInfo) {
 function InvoiceListItem(
   props: Awaited<ReturnType<typeof getInvoiceListSummary>>[0]
 ) {
+  const invoiceUrl = link("/invoice/:id", { id: props.id });
+
   return (
-    <TableRow>
+    <TableRow className="hover:bg-muted/50">
       <TableCell>
-        <a href={link("/invoice/:id", { id: props.id })}>{props.number}</a>
+        <a
+          href={invoiceUrl}
+          className="block hover:underline"
+          aria-label={`View invoice ${props.number}`}
+        >
+          {props.number}
+        </a>
       </TableCell>
       <TableCell>
-        {props.date
-          ? new Date(props.date).toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })
-          : ""}
+        <a href={invoiceUrl} className="block" aria-hidden="true">
+          {props.date
+            ? new Date(props.date).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : ""}
+        </a>
       </TableCell>
-      <TableCell>{props.customerName ?? ""}</TableCell>
+      <TableCell>
+        <a href={invoiceUrl} className="block" aria-hidden="true">
+          {props.customerName ?? ""}
+        </a>
+      </TableCell>
       <TableCell className="text-right">
-        <a href={link("/invoice/:id", { id: props.id })}>Edit</a>
+        <a href={invoiceUrl} className="hover:underline">
+          Edit
+        </a>
       </TableCell>
     </TableRow>
   );
