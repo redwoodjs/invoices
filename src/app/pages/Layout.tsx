@@ -54,15 +54,9 @@ function Header({
   );
 }
 
-export function Layout({
-  children,
-  ctx,
-}: {
-  children: React.ReactNode;
-  ctx?: RequestInfo["ctx"];
-}) {
-  const user = ctx?.user || requestInfo.ctx?.user;
-  const theme = ctx?.theme || requestInfo.ctx?.theme || "system";
+export function Layout({ children }: { children: React.ReactNode }) {
+  const user = requestInfo.ctx?.user;
+  const theme = requestInfo.ctx?.theme || "system";
 
   return (
     <div className="min-h-screen bg-background">

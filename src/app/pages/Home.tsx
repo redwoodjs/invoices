@@ -5,7 +5,7 @@ import { InvoiceForm } from "./invoice/detail-page/invoice-form";
 
 export function HomePage({ ctx }: RequestInfo) {
   return (
-    <Layout ctx={ctx}>
+    <Layout>
       <InvoiceForm
         invoice={{
           id: "new",

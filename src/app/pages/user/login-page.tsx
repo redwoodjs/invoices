@@ -4,7 +4,7 @@ import { LoginForm } from "./login-form";
 
 export function LoginPage({ ctx }: RequestInfo) {
   return (
-    <Layout ctx={ctx}>
+    <Layout>
       <LoginForm />
     </Layout>
   );

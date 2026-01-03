@@ -30,7 +30,7 @@ export async function InvoiceBinPage({ ctx }: RequestInfo) {
   const invoices = await getDeletedInvoices(user.id);
 
   return (
-    <Layout ctx={ctx}>
+    <Layout>
       <div className="space-y-4 py-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Deleted Invoices</h1>

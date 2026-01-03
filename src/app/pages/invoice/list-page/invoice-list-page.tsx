@@ -50,7 +50,7 @@ export async function InvoiceListPage({ request, ctx }: RequestInfo) {
   const invoices = await getInvoiceListSummary(user.id, customerFilter || null);
 
   return (
-    <Layout ctx={ctx}>
+    <Layout>
       <div className="space-y-2 py-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <a
