@@ -26,6 +26,7 @@ export type AppContext = {
     id: string;
     email: string;
   } | null;
+  theme?: "dark" | "light" | "system";
 };
 
 export const getUser = async (session: Session | null) => {
@@ -44,6 +45,15 @@ export const getUser = async (session: Session | null) => {
 
 const app = defineApp([
   async ({ request, ctx, response }) => {
+    // Read theme from cookie
+    const cookieHeader = request.headers.get("Cookie");
+
+    // Improved regex to handle multiple cookies and ignore "undefined"
+    const themeMatch = cookieHeader?.match(
+      /(?:^|;)\s*theme=(dark|light|system)(?:;|$)/
+    );
+    ctx.theme = (themeMatch?.[1] as "dark" | "light" | "system") || "system";
+
     try {
       ctx.session = await sessionStore.load(request);
       ctx.user = await getUser(ctx.session);

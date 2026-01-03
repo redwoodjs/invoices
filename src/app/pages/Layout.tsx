@@ -1,3 +1,4 @@
+import React from "react";
 import { requestInfo, type RequestInfo } from "rwsdk/worker";
 
 import { link } from "@/app/shared/links";
@@ -27,14 +28,20 @@ function Logo() {
   );
 }
 
-function Header({ user }: { user?: RequestInfo["ctx"]["user"] }) {
+function Header({
+  user,
+  theme,
+}: {
+  user?: RequestInfo["ctx"]["user"];
+  theme: "dark" | "light" | "system";
+}) {
   return (
     <div className="px-8 py-4 flex justify-between items-center border-b">
       <a href="/">
         <Logo />
       </a>
       <div className="flex gap-2 items-center">
-        <ThemeToggle />
+        <ThemeToggle initialTheme={theme} />
         <div className="text-sm font-semibold">
           {user ? (
             <a href={link("/user/logout")}>Logout</a>
@@ -47,12 +54,19 @@ function Header({ user }: { user?: RequestInfo["ctx"]["user"] }) {
   );
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  const user = requestInfo.ctx?.user;
+export function Layout({
+  children,
+  ctx,
+}: {
+  children: React.ReactNode;
+  ctx?: RequestInfo["ctx"];
+}) {
+  const user = ctx?.user || requestInfo.ctx?.user;
+  const theme = ctx?.theme || requestInfo.ctx?.theme || "system";
 
   return (
     <div className="min-h-screen bg-background">
-      <Header user={user} />
+      <Header user={user} theme={theme} />
 
       <main className="min-h-screen">
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</div>

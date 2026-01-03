@@ -1,9 +1,10 @@
+import { type RequestInfo } from "rwsdk/worker";
 import { Layout } from "../layout";
 import { LoginForm } from "./login-form";
 
-export function LoginPage() {
+export function LoginPage({ ctx }: RequestInfo) {
   return (
-    <Layout>
+    <Layout ctx={ctx}>
       <LoginForm />
     </Layout>
   );

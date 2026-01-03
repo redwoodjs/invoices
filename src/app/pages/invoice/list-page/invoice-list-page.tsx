@@ -43,14 +43,14 @@ async function getInvoiceListSummary(userId: string, customer?: string | null) {
   return await query.orderBy("date", "desc").execute();
 }
 
-export async function InvoiceListPage({ request }: RequestInfo) {
-  const user = requestInfo.ctx.user!;
+export async function InvoiceListPage({ request, ctx }: RequestInfo) {
+  const user = ctx.user!;
   const url = new URL(request.url);
   const customerFilter = url.searchParams.get("customer") ?? "";
   const invoices = await getInvoiceListSummary(user.id, customerFilter || null);
 
   return (
-    <Layout>
+    <Layout ctx={ctx}>
       <div className="space-y-2 py-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <a

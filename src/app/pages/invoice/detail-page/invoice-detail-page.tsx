@@ -119,7 +119,7 @@ export async function InvoiceDetailPage({ params, ctx }: RequestInfo) {
   const invoice = await getInvoice(params.id, ctx.user!.id);
 
   return (
-    <Layout>
+    <Layout ctx={ctx}>
       <BreadcrumbList>
         <BreadcrumbLink href={link("/invoice/list")}>Invoices</BreadcrumbLink>
         <BreadcrumbSeparator />

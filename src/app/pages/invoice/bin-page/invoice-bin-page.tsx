@@ -1,5 +1,5 @@
 import { Layout } from "@/app/pages/layout";
-import { requestInfo } from "rwsdk/worker";
+import { requestInfo, type RequestInfo } from "rwsdk/worker";
 
 import { db } from "@/db/db";
 
@@ -25,12 +25,12 @@ async function getDeletedInvoices(userId: string) {
     .execute();
 }
 
-export async function InvoiceBinPage() {
-  const user = requestInfo.ctx.user!;
+export async function InvoiceBinPage({ ctx }: RequestInfo) {
+  const user = ctx.user!;
   const invoices = await getDeletedInvoices(user.id);
 
   return (
-    <Layout>
+    <Layout ctx={ctx}>
       <div className="space-y-4 py-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Deleted Invoices</h1>

@@ -1,39 +1,95 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Monitor } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { setTheme } from "../actions";
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [mounted, setMounted] = useState(false);
+type Theme = "dark" | "light" | "system";
 
+export function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
+  const [theme, setThemeState] = useState<Theme>(initialTheme);
+  const isInitialMount = useRef(true);
+
+  // Sync with server-provided theme on mount/navigation
   useEffect(() => {
-    setMounted(true);
-    // Get initial theme from localStorage or system preference
-    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialTheme = stored || (prefersDark ? "dark" : "light");
-    
-    setTheme(initialTheme);
-    document.documentElement.classList.toggle("dark", initialTheme === "dark");
-  }, []);
+    if (initialTheme && initialTheme !== theme) {
+      setThemeState(initialTheme);
+    }
+  }, [initialTheme]);
+
+  // Update DOM when theme changes
+  useEffect(() => {
+    const root = document.documentElement;
+    const shouldBeDark =
+      theme === "dark" ||
+      (theme === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    if (shouldBeDark) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    // Set data attribute for consistency
+    root.setAttribute("data-theme", theme);
+
+    // Persist to cookie and server (only if not initial mount)
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    // Persist to cookie
+    const cookieString = `theme=${theme}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    document.cookie = cookieString;
+
+    // Persist to server via server action
+    setTheme(theme).catch((error) => {
+      console.error("Failed to set theme:", error);
+    });
+  }, [theme]);
+
+  // Listen for system theme changes when theme is "system"
+  useEffect(() => {
+    if (theme !== "system") return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      const root = document.documentElement;
+      if (mediaQuery.matches) {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [theme]);
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    // Cycle through: system -> light -> dark -> system
+    if (theme === "system") {
+      setThemeState("light");
+    } else if (theme === "light") {
+      setThemeState("dark");
+    } else {
+      setThemeState("system");
+    }
   };
 
-  if (!mounted) {
-    // Return a placeholder button to prevent layout shift
-    return (
-      <Button variant="ghost" size="icon" className="h-9 w-9">
-        <Sun className="h-4 w-4" />
-      </Button>
-    );
-  }
+  const getIcon = () => {
+    // Icon represents the NEXT state in the cycle: system -> light -> dark -> system
+    if (theme === "dark") {
+      return <Sun className="h-4 w-4" />;
+    } else if (theme === "light") {
+      return <Moon className="h-4 w-4" />;
+    } else {
+      return <Monitor className="h-4 w-4" />;
+    }
+  };
 
   return (
     <Button
@@ -43,12 +99,7 @@ export function ThemeToggle() {
       className="h-9 w-9"
       aria-label="Toggle theme"
     >
-      {theme === "light" ? (
-        <Moon className="h-4 w-4" />
-      ) : (
-        <Sun className="h-4 w-4" />
-      )}
+      {getIcon()}
     </Button>
   );
 }
-
