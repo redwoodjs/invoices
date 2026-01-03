@@ -1,7 +1,7 @@
 import { requestInfo, type RequestInfo } from "rwsdk/worker";
 
 import { link } from "@/app/shared/links";
-import { ThemeToggle } from "@/app/components/ThemeToggle";
+import { ThemeToggle } from "@/app/components/theme-toggle";
 
 function Logo() {
   return (

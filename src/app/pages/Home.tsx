@@ -1,7 +1,7 @@
 import type { RequestInfo } from "rwsdk/worker";
 
-import { Layout } from "./Layout";
-import { InvoiceForm } from "./invoice/DetailPage/InvoiceForm";
+import { Layout } from "./layout";
+import { InvoiceForm } from "./invoice/detail-page/invoice-form";
 
 export function HomePage({ ctx }: RequestInfo) {
   return (

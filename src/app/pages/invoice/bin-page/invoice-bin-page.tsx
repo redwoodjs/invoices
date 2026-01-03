@@ -1,4 +1,4 @@
-import { Layout } from "@/app/pages/Layout";
+import { Layout } from "@/app/pages/layout";
 import { requestInfo } from "rwsdk/worker";
 
 import { db } from "@/db/db";

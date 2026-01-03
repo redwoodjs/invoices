@@ -4,9 +4,9 @@ import { env } from "cloudflare:workers";
 
 import { db } from "@/db/db";
 
-import { InvoiceListPage } from "./ListPage/InvoiceListPage";
-import { InvoiceDetailPage } from "./DetailPage/InvoiceDetailPage";
-import { InvoiceBinPage } from "./BinPage/InvoiceBinPage";
+import { InvoiceListPage } from "./list-page/invoice-list-page";
+import { InvoiceDetailPage } from "./detail-page/invoice-detail-page";
+import { InvoiceBinPage } from "./bin-page/invoice-bin-page";
 
 function isAuthenticated({ ctx }: RequestInfo) {
   if (!ctx.user) {

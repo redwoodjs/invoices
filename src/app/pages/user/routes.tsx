@@ -1,5 +1,5 @@
 import { route } from "rwsdk/router";
-import { LoginPage } from "./LoginPage";
+import { LoginPage } from "./login-page";
 import { sessionStore } from "@/worker";
 import { link } from "@/app/shared/links";
 

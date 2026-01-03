@@ -6,8 +6,8 @@ import type {
   InvoiceItem,
   InvoiceLabels,
   InvoiceTaxes,
-} from "./InvoiceDetailPage";
-import type { Invoice as FormInvoice } from "./InvoiceForm";
+} from "./invoice-detail-page";
+import type { Invoice as FormInvoice } from "./invoice-form";
 import { requestInfo } from "rwsdk/worker";
 import { link } from "@/app/shared/links";
 

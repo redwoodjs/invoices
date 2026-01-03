@@ -1,5 +1,5 @@
-import { Layout } from "../Layout";
-import { LoginForm } from "./LoginForm";
+import { Layout } from "../layout";
+import { LoginForm } from "./login-form";
 
 export function LoginPage() {
   return (

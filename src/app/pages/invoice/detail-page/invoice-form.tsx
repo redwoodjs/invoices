@@ -5,9 +5,9 @@ import { PlusIcon, Trash2Icon } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import type { RequestInfo } from "rwsdk/worker";
 
-import { type InvoiceTaxes, type InvoiceItem } from "./InvoiceDetailPage";
+import { type InvoiceTaxes, type InvoiceItem } from "./invoice-detail-page";
 import { deleteLogo, saveInvoice } from "./functions";
-import { PrintPdf } from "./PrintToPdf";
+import { PrintPdf } from "./print-to-pdf";
 import { link } from "@/app/shared/links";
 import { Button } from "@/app/components/ui/button";
 import { Input as OGInput } from "@/app/components/ui/input";

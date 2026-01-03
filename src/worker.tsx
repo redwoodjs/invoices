@@ -5,13 +5,13 @@ import { defineDurableSession } from "rwsdk/auth";
 
 import { db } from "@/db/db";
 
-import { Session } from "./session/durableObject";
-export { SessionDurableObject } from "./session/durableObject";
-export { AppDurableObject } from "./db/durableObject";
+import { Session } from "./session/durable-object";
+export { SessionDurableObject } from "./session/durable-object";
+export { AppDurableObject } from "./db/durable-object";
 
 import { link } from "@/app/shared/links";
-import { Document } from "@/app/Document";
-import { HomePage } from "@/app/pages/Home";
+import { Document } from "@/app/document";
+import { HomePage } from "@/app/pages/home";
 
 import { userRoutes } from "@/app/pages/user/routes";
 import { invoiceRoutes } from "@/app/pages/invoice/routes";

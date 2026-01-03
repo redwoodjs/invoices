@@ -1,7 +1,7 @@
-import { Layout } from "@/app/pages/Layout";
+import { Layout } from "@/app/pages/layout";
 import { requestInfo, type RequestInfo } from "rwsdk/worker";
 
-import { NewInvoiceButton } from "./components/NewInvoiceButton";
+import { NewInvoiceButton } from "./components/new-invoice-button";
 import { db } from "@/db/db";
 
 import { link } from "@/app/shared/links";
