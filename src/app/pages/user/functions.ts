@@ -163,7 +163,7 @@ export async function finishPasskeyLogin(login: AuthenticationResponseJSON) {
     requireUserVerification: false,
     credential: {
       id: credential.credentialId,
-      publicKey: credential.publicKey,
+      publicKey: new Uint8Array(credential.publicKey),
       counter: credential.counter,
     },
   });
