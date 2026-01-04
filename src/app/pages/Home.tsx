@@ -34,6 +34,7 @@ export function HomePage({ ctx }: RequestInfo) {
           supplierName: "",
           supplierContact: "",
           supplierLogo: null,
+          customerName: "",
           customer: "",
           currency: "$",
           notesA: "",

@@ -4,7 +4,7 @@ import { Button } from "@/app/components/ui/button";
 export function PrintPdf({
   contentRef,
 }: {
-  contentRef: React.RefObject<HTMLDivElement>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const reactToPrintFn = useReactToPrint({
     contentRef,

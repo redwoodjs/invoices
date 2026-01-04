@@ -38,7 +38,6 @@ export function NewInvoiceButton() {
   };
 
   const createInvoice = async (customerName?: string, customer?: string) => {
-    // @ts-expect-error https://react.dev/reference/react/useTransition#react-doesnt-treat-my-state-update-after-await-as-a-transition
     startTransition(async () => {
       const invoice = await newInvoice(customerName, customer);
       setDialogOpen(false);

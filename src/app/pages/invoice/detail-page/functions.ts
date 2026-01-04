@@ -31,8 +31,9 @@ export async function saveInvoice(
     throw new Error("Invoice not found");
   }
 
-  const data: DbInvoice = {
+  const data: Omit<DbInvoice, "deletedAt"> & { deletedAt: string | null } = {
     ...invoice,
+    deletedAt: null,
     date:
       typeof invoice.date === "string"
         ? invoice.date
@@ -72,6 +73,7 @@ export async function saveInvoice(
         taxes: data.taxes,
         labels: data.labels,
         currency: data.currency,
+        deletedAt: data.deletedAt,
         updatedAt: new Date().toISOString(),
       })
     )
